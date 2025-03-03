@@ -70,10 +70,11 @@
    margin-top: 0px;
     background-color: #34495E;
     height:100%;
-    width:110%;
+    width:100%;
     display: flex;
     flex-direction: column;
     align-items:center ;
+    padding:10px;
   }
   h1{
     padding-top: 5%;
@@ -92,10 +93,15 @@
 
 
   /* From Uiverse.io by FH638 */ 
-
+menu{
+  margin:0px;
+ 
+  margin-left:-100px;
+}
   .input {
    
     margin-left: -100px;
+    
   }
 .value {
   font-size: 15px;
@@ -110,6 +116,7 @@
   border-radius: 10px;
   transition: 1s;
   box-sizing: border-box;
+  width:180%;
 }
 
 .value:not(:active):hover,
@@ -125,6 +132,7 @@
   background-color: #1a1f24;
   outline: none;
   margin-left: 17px;
+  
 }
 
 .value::before {

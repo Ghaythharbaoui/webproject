@@ -9,4 +9,8 @@
 app-sidebar{
     height: 100vh;
     margin: 0px;
+    
+}
+.content{
+    margin-left:100px;
 }

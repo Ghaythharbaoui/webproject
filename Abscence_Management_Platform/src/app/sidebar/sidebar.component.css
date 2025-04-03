@@ -100,7 +100,7 @@ menu{
 }
   .input {
    
-    margin-left: -100px;
+    margin-left: -5%;
     
   }
 .value {
@@ -116,7 +116,7 @@ menu{
   border-radius: 10px;
   transition: 1s;
   box-sizing: border-box;
-  width:180%;
+  width:110%;
 }
 
 .value:not(:active):hover,
@@ -124,7 +124,7 @@ menu{
   display: flex;
   box-sizing: border-box;
   border: 2px solid #1a1f24;
-  color: #637185;
+  color: #ffffff;
 }
 
 .value:focus,
@@ -159,6 +159,6 @@ menu{
 
 .input:hover > :not(.value:hover) {
   transition: 300ms;
-  filter: blur(1.5px);
+  /*filter: blur(1.5px);*/
   transform: scale(0.95, 0.95);
 }

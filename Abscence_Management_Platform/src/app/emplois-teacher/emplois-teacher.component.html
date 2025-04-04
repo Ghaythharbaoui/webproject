@@ -1,0 +1,43 @@
+<!-- emploi-du-temps.component.html -->
+<div class="emploi-container">
+    <div class="header-section">
+      <h2>Votre Emploi du Temps pour :</h2>
+      <div class="module-info">
+        <p>Module: <strong>{{ currentModule }}</strong></p>
+        <p>Semestre: <strong>{{ currentSemester }}</strong></p>
+      </div>
+    </div>
+  
+    <div class="filters">
+      <select (change)="filterByDay()">
+        <option value="all">Tous les jours</option>
+        <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+      </select>
+    </div>
+  
+    <div class="timetable">
+      <table>
+        <thead>
+          <tr>
+            <th>Jour</th>
+            <th>Heure</th>
+            <th>Cours</th>
+            <th>Salle</th>
+            <th>Groupe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let course of filteredCourses">
+            <td>{{ course.day }}</td>
+            <td>{{ course.startTime }} - {{ course.endTime }}</td>
+            <td>{{ course.subject }}</td>
+            <td>{{ course.room }}</td>
+            <td>{{ course.group }}</td>
+          </tr>
+          <tr *ngIf="filteredCourses.length === 0">
+            <td colspan="5" class="no-data">Aucun cours programmé</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

@@ -1,0 +1,60 @@
+<div class="request-list">
+    <h2>{{ title }}</h2>
+  
+    <div class="filters">
+      <select > 
+        <option value="">Classe (All)</option>
+        <option value="Classe 1">Classe 1</option>
+        <option value="Classe 2">Classe 2</option>
+        <!-- Add more classes dynamically from your data -->
+      </select>
+      <select  >
+        <option value="">Spec (All)</option>
+        <option value="Informatique">Informatique</option>
+        <!-- Add more specs -->
+      </select>
+      <select >
+        <option value="">Groupe (All)</option>
+        <option value="Groupe A">Groupe A</option>
+        <option value="Groupe B">Groupe B</option>
+        <option value="Groupe C">Groupe C</option>
+        <option value="Groupe D">Groupe D</option>
+        <!-- Add more groups -->
+      </select>
+      <select >
+        <option value="">Status (All)</option>
+        <option value="En Attente">En Attente</option>
+        <option value="Acceptée">Acceptée</option>
+        <option value="Refusée">Refusée</option>
+      </select>
+      <input type="text" placeholder="Label" >
+      <input type="text" placeholder="Search Label" >
+    </div>
+  
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date Range</th>
+          <th>Classe : Spécialité : Groupe</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of requests">
+          <td>{{ request.id }}</td>
+          <td>{{ request.dateRange }}</td> <!-- Format date range as needed -->
+          <td>{{ request.classGroup }}</td>
+          <td>
+            <span >
+              {{ request.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!--
+  [(ngModel)]="filterClasse" (change)="applyFilters()"
+  -->

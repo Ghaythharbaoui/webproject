@@ -9,10 +9,22 @@ import { HistoriqueComponent } from './historique/historique.component';
 import { OptionsComponent } from './options/options.component';
 import { SignupComponent } from './signup/signup.component';
 
+import { DashboardTeacherComponent } from './dashboard-teacher/dashboard-teacher.component';
+import { AccueilTeacherComponent } from './accueil-teacher/accueil-teacher.component';
+import { AbsenceRequestFormComponent } from './absence-request-form/absence-request-form.component';
+import { CatchUpRequestFormComponent } from './catch-up-request-form/catch-up-request-form.component';
+import { RequestListComponent } from './request-list/request-list.component';
+import { HistoriqueTeacherComponent } from './historique-teacher/historique-teacher.component';
+import { EmploisTeacherComponent } from './emplois-teacher/emplois-teacher.component';
+
+
+
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: MainComponent },
     { path: 'student_login', component: LoginComponent },
+    { path: 'student_signup', component: SignupComponent },
+
     {
       path: 'student_dashboard',
         component: DashboardComponent,
@@ -24,8 +36,19 @@ export const routes: Routes = [
           { path: 'Options', component:  OptionsComponent },
           { path: '', component:  AccueilEtdComponent }
         ]
-      },
-      { path: 'student_signup', component: SignupComponent },
+      },{
+        path: 'teacher_dashboard',
+          component: DashboardTeacherComponent,
+          children: [
+            { path: 'Accueil_teacher', component: AccueilTeacherComponent },
+            { path: 'abs-demande', component: AbsenceRequestFormComponent },
+            { path: 'ratt-demande', component: CatchUpRequestFormComponent },
+            { path: 'teacher-demande', component: RequestListComponent },
+            { path: 'teacher-historique', component: HistoriqueTeacherComponent },
+            { path: 'teacher-emploi', component: EmploisTeacherComponent },
+            { path: '', component:  AccueilTeacherComponent }
+          ]
+        },
       
 
 ];

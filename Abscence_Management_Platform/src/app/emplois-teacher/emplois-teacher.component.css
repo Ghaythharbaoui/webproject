@@ -1,0 +1,53 @@
+/* emploi-du-temps.component.css */
+.emploi-container {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: block;
+  }
+  
+  .header-section {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 15px;
+  }
+  
+  .module-info {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+  }
+  
+  .filters {
+    margin-bottom: 15px;
+  }
+  
+  select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
+  
+  .timetable table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .timetable th,
+  .timetable td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .timetable th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+  }
+  
+  .no-data {
+    text-align: center;
+    color: #666;
+    padding: 20px !important;
+  }

@@ -1,0 +1,51 @@
+.request-list {
+    padding: 20px;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .filters select, .filters input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f0f0f0;
+  }
+  
+  .status-en-attente {
+    background-color: #e6e600; /* Yellow for "En Attente" */
+    color: black;
+    padding: 5px 8px;
+    border-radius: 5px;
+  }
+  
+  .status-acceptee {
+    background-color: #4CAF50; /* Green for "Acceptée" */
+    color: white;
+    padding: 5px 8px;
+    border-radius: 5px;
+  }
+  
+  .status-refusee {
+    background-color: #f44336; /* Red for "Refusée" */
+    color: white;
+    padding: 5px 8px;
+    border-radius: 5px;
+  }

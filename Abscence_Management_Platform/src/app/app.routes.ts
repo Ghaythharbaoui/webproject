@@ -16,6 +16,10 @@ import { CatchUpRequestFormComponent } from './catch-up-request-form/catch-up-re
 import { RequestListComponent } from './request-list/request-list.component';
 import { HistoriqueTeacherComponent } from './historique-teacher/historique-teacher.component';
 import { EmploisTeacherComponent } from './emplois-teacher/emplois-teacher.component';
+import { AdminLogComponent } from './Responsable/admin-log/admin-log.component';
+import { SignupAdminComponent } from './Responsable/signup-admin/signup-admin.component';
+import { ResponsableDashbordComponent } from './Responsable/responsable-dashbord/responsable-dashbord.component';
+import { AbsListComponent } from './Responsable/abs-list/abs-list.component';
 
 
 
@@ -24,6 +28,8 @@ export const routes: Routes = [
     { path: 'home', component: MainComponent },
     { path: 'student_login', component: LoginComponent },
     { path: 'student_signup', component: SignupComponent },
+    {path :'Admin_Login' ,   component: AdminLogComponent } ,
+    {path :'Admin_signup' ,   component: SignupAdminComponent } ,
 
     {
       path: 'student_dashboard',
@@ -49,6 +55,13 @@ export const routes: Routes = [
             { path: '', component:  AccueilTeacherComponent }
           ]
         },
-      
-
+        {
+          path : 'res_dashbord',
+          component: ResponsableDashbordComponent,
+          children: [
+            {
+              path: "list-abs" , component: AbsListComponent
+            }
+          ]
+        }
 ];

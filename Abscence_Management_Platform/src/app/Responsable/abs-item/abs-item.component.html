@@ -1,0 +1,11 @@
+<div class="absence-item">
+    <div class="info">
+      <i class="fa fa-user-circle"></i>
+      <span>{{ nom }}</span>
+      <span>Nombre Total D’absences: {{ totalAbsences }}</span>
+    </div>
+    <div class="actions">
+      <button class="btn btn-danger" (click)="rejeter()">Rejeter</button>
+      <button class="btn btn-success" (click)="valider()">Valider</button>
+    </div>
+  </div>

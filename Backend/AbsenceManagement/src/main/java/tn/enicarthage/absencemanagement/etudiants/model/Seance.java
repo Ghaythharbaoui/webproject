@@ -1,0 +1,50 @@
+package tn.enicarthage.absencemanagement.etudiants.model;
+
+
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import tn.enicarthage.absencemanagement.enseignants.model.Aceptee;
+import tn.enicarthage.absencemanagement.enseignants.model.Enseignant;
+import tn.enicarthage.absencemanagement.enseignants.model.Rattrappage;
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+public class Seance {
+@Id
+@GeneratedValue(strategy=GenerationType.IDENTITY)
+private int id;
+private String Matiere;
+private String Salle;
+
+
+@Enumerated(EnumType.STRING)
+@Column(nullable=true)
+private Aceptee ISrattrappage;
+
+@ManyToOne(cascade = CascadeType.ALL
+,fetch = FetchType.EAGER/* fetch =
+FetchType.LAZY*/)
+private Enseignant enseignant;
+
+@ManyToOne(cascade = CascadeType.ALL
+,fetch = FetchType.EAGER/* fetch =
+FetchType.LAZY*/)
+private Rattrappage rattrapage;
+}

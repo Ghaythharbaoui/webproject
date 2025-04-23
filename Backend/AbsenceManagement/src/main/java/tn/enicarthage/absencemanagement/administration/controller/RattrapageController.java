@@ -9,20 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import tn.enicarthage.absencemanagement.administration.model.AbsenceDTO;
-import tn.enicarthage.absencemanagement.administration.model.EnseignantDTO;
+import tn.enicarthage.absencemanagement.administration.model.RattrapageDTO;
 import tn.enicarthage.absencemanagement.administration.service.AbsenceService;
-import tn.enicarthage.absencemanagement.administration.service.EnseignantService;
-import tn.enicarthage.absencemanagement.enseignants.model.Absence;
-import tn.enicarthage.absencemanagement.enseignants.model.Aceptee;
+import tn.enicarthage.absencemanagement.administration.service.RattrapageService;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class AbsenceController {
+public class RattrapageController {
 	@Autowired
- private final AbsenceService absenceService;
-	 @GetMapping("/pending_absences")
-	    public List<AbsenceDTO> getAllAbsences() {
-	        return absenceService.getAllAbsences();
-	 }
+	 private final RattrapageService rattrapageService;
+		 @GetMapping("/pending_rattrapages")
+		    public List<RattrapageDTO> getAllAbsences() {
+		        return rattrapageService.getAllRattrapages();
+		 }
+
 }

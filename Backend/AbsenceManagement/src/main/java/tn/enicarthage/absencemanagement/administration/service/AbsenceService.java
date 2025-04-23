@@ -1,0 +1,23 @@
+package tn.enicarthage.absencemanagement.administration.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import lombok.AllArgsConstructor;
+import tn.enicarthage.absencemanagement.administration.model.AbsenceDTO;
+import tn.enicarthage.absencemanagement.administration.repository.AbsenceRepository;
+import tn.enicarthage.absencemanagement.administration.repository.EnseignantRepository;
+import tn.enicarthage.absencemanagement.enseignants.model.Absence;
+import tn.enicarthage.absencemanagement.enseignants.model.Enseignant;
+@AllArgsConstructor
+@Service
+public class AbsenceService {
+	@Autowired
+	private final AbsenceRepository absenceRepository;
+	 public List<AbsenceDTO> getAllAbsences() {
+	        return absenceRepository.findAllWithEnseignant();
+	    }
+	
+}

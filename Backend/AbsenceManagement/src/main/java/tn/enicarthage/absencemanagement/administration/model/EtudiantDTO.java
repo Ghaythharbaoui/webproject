@@ -1,9 +1,9 @@
 package tn.enicarthage.absencemanagement.administration.model;
 
-import java.io.Serializable;
 import java.util.List;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,18 +16,22 @@ import tn.enicarthage.absencemanagement.etudiants.model.Groupe;
 
 import tn.enicarthage.absencemanagement.etudiants.model.Specialite;
 import tn.enicarthage.absencemanagement.etudiants.model.User;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@Entity
-public class Admin extends User implements Serializable{
-	private static final long serialVersionUID = 1L;
-	private String numtel;
+public class EtudiantDTO{
+	private Long id;
+	private String nom;
+	private String prenom;
+	private String email;
+	private String motdepass;
+	@Enumerated(EnumType.STRING)
+	private Classe classe;
+	@Enumerated(EnumType.STRING)
+	private Specialite specialite;
+	@Enumerated(EnumType.STRING)
+	private Groupe groupe;
 	
-	
-	
-
 }

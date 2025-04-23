@@ -2,6 +2,8 @@ package tn.enicarthage.absencemanagement.etudiants.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import tn.enicarthage.absencemanagement.administration.model.Salle;
 import tn.enicarthage.absencemanagement.enseignants.model.Aceptee;
 import tn.enicarthage.absencemanagement.enseignants.model.Enseignant;
 import tn.enicarthage.absencemanagement.enseignants.model.Rattrappage;
@@ -31,7 +34,6 @@ public class Seance {
 @GeneratedValue(strategy=GenerationType.IDENTITY)
 private int id;
 private String Matiere;
-private String Salle;
 
 
 @Enumerated(EnumType.STRING)
@@ -39,12 +41,19 @@ private String Salle;
 private Aceptee ISrattrappage;
 
 @ManyToOne(cascade = CascadeType.ALL
-,fetch = FetchType.EAGER/* fetch =
-FetchType.LAZY*/)
+,fetch = FetchType.EAGER)
 private Enseignant enseignant;
+
+
+@ManyToOne(cascade = CascadeType.ALL
+,/*fetch = FetchType.EAGER*/fetch =
+FetchType.LAZY)
+private Rattrappage rattrapage;
+
+
 
 @ManyToOne(cascade = CascadeType.ALL
 ,fetch = FetchType.EAGER/* fetch =
 FetchType.LAZY*/)
-private Rattrappage rattrapage;
+private Salle salle;
 }

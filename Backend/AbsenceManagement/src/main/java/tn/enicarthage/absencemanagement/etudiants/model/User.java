@@ -29,7 +29,7 @@ public abstract class User implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "user_id")
-	private int id;
+	private Long id;
 	private String nom;
 	private String prenom;
 	private String email;

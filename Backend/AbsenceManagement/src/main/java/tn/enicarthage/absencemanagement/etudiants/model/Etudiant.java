@@ -32,8 +32,8 @@ public class Etudiant extends User implements Serializable {
 	private Groupe groupe;
 	
 	@OneToMany(mappedBy = "user")
-	private List<Abs_Epinglee> absences_epiglees;
+	private List<Abs_Epingle_Et> absences_epiglees;
 	@OneToMany(mappedBy = "user")
-	private List<Ratt_Epingle> rattrappagees_epiglees;
+	private List<Ratt_Epingle_Et> rattrappagees_epiglees;
 	
 }

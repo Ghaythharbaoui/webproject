@@ -24,5 +24,4 @@ public class StudentController {
 	                .map(e -> new EtudiantDTO(e.getId(), e.getNom(), e.getPrenom(),e.getEmail(),e.getMotdepass(),e.getClasse(),e.getSpecialite(),e.getGroupe()))
 	                .toList();
 	    }
-
 }

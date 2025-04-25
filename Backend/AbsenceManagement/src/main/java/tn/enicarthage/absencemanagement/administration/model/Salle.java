@@ -45,8 +45,7 @@ public class Salle implements Serializable{
 	@OneToMany( cascade =
 			CascadeType.ALL, mappedBy = "salle")
 			private List<Seance> listeSeances ;
-	
-	
+
 	@OneToMany( cascade =
 			CascadeType.ALL, mappedBy = "salle")
 			private List<Seance> listeEvenements ;

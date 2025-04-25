@@ -16,6 +16,7 @@ import lombok.ToString;
 import tn.enicarthage.absencemanagement.enseignants.model.Aceptee;
 import tn.enicarthage.absencemanagement.enseignants.model.Enseignant;
 import tn.enicarthage.absencemanagement.enseignants.model.numSeance;
+import tn.enicarthage.absencemanagement.etudiants.DTO.RatrappageStudentRespons;
 import tn.enicarthage.absencemanagement.etudiants.model.Classe;
 import tn.enicarthage.absencemanagement.etudiants.model.Etudiant;
 import tn.enicarthage.absencemanagement.etudiants.model.Groupe;
@@ -42,5 +43,19 @@ public class RattrapageDTO {
 	private String grade;
 	private String num_tel;
 	private int nbAbsences;
+	public RatrappageStudentRespons transformToRatrappageStudentRespons() {
+		RatrappageStudentRespons r = new RatrappageStudentRespons();
+		r.setDate_db(date_db);
+		r.setDate_fin(date_fin);
+		r.setSeancedb(seancedb);
+		r.setSeancefin(seancefin);
+		r.setClasse(classe);
+		r.setSpecialite(specialite);
+		r.setGroupe(groupe);
+		r.setNom(nom);
+		r.setPrenom(prenom);
+		return r ;
+	}
+
 
 }

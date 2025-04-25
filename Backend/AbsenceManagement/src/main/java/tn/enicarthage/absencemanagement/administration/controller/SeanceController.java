@@ -1,6 +1,5 @@
 package tn.enicarthage.absencemanagement.administration.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,26 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import tn.enicarthage.absencemanagement.administration.model.AbsenceDTO;
-import tn.enicarthage.absencemanagement.administration.model.RattrapageDTO;
+import tn.enicarthage.absencemanagement.administration.model.SeanceInfo;
 import tn.enicarthage.absencemanagement.administration.service.AbsenceService;
-import tn.enicarthage.absencemanagement.administration.service.RattrapageService;
+import tn.enicarthage.absencemanagement.administration.service.SeanceService;
+import tn.enicarthage.absencemanagement.enseignants.model.Aceptee;
+import tn.enicarthage.absencemanagement.etudiants.model.Classe;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class RattrapageController {
+public class SeanceController {
 	@Autowired
-	 private final RattrapageService rattrapageService;
-		 @GetMapping("/pending_rattrapages")
-		    public List<RattrapageDTO> getAllAbsences() {
-			 
-			 
-			 
-		        return rattrapageService.getAllRattrapages();
-		 }
-		 @GetMapping("/DateAffRatt")
-		 public LocalDate getDateAff( @RequestParam int id) {
-			 return rattrapageService.getDateAffRatt(id);
+	 private final SeanceService seanceservice ;
+		 @GetMapping("/IsRattrapage")
+		    public  SeanceInfo IsRattrapage(@RequestParam int id) {
+		        return seanceservice.IsRattrappage(id);
 		 }
 
 }

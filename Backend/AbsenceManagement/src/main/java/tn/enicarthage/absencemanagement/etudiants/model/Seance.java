@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,9 +46,7 @@ private Aceptee ISrattrappage;
 private Enseignant enseignant;
 
 
-@ManyToOne(cascade = CascadeType.ALL
-,/*fetch = FetchType.EAGER*/fetch =
-FetchType.LAZY)
+@OneToOne
 private Rattrappage rattrapage;
 
 

@@ -1,6 +1,7 @@
 package tn.enicarthage.absencemanagement.administration.service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class RattrapageService {
 	private final RattrapageRepository rattrapageRepository;
 	 public List<RattrapageDTO> getAllRattrapages() {
 	        return rattrapageRepository.findAllWithEnseignant();
+	    }
+	 public LocalDate getDateAffRatt(int ids) {
+	        return rattrapageRepository.findDateAffRattById( ids);
 	    }
 
 }

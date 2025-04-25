@@ -2,6 +2,7 @@ package tn.enicarthage.absencemanagement.enseignants.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,7 +69,7 @@ public class Rattrappage implements Serializable {
 	private Groupe groupe;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date_affectee",nullable=true)
-	private Date date_aff;
+	private LocalDate date_aff;
 	@Column(nullable=true)
 	@Enumerated(EnumType.STRING)
 	private numSeance seanceAff;
@@ -82,9 +83,8 @@ public class Rattrappage implements Serializable {
 			private Enseignant enseignant;
 	
 	
-	@OneToMany( cascade =
-			CascadeType.ALL, mappedBy = "rattrapage")
-			private List<Seance> listSeancesRatt;
+	@OneToOne(mappedBy = "rattrapage")
+			private Seance SeanceRatt;
 	
 	 @ManyToMany(mappedBy = "rattrapagesEpinglees")
 	    private List<Etudiant> etudiantsQuiEpinglent;

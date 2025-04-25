@@ -36,9 +36,10 @@ public interface RattrapageRepository extends JpaRepository<Rattrappage, Long>{
 		      )
 		      FROM Rattrappage a
 		      JOIN a.enseignant e
-		      WHERE a.acceptee IS NULL
+		      WHERE a.acceptee IS  NULL
 		    """)
 		    List<RattrapageDTO> findAllWithEnseignant();
+<<<<<<< HEAD
 	
 	
 	@Query("""
@@ -55,4 +56,29 @@ public interface RattrapageRepository extends JpaRepository<Rattrappage, Long>{
 		    		
 		    		);
 
+=======
+	@Query("""
+		      SELECT new tn.enicarthage.absencemanagement.administration.model.RattrapageDTO(
+		        a.id,
+		        a.date_db,           
+		        a.date_fin,
+		        a.seancedb,
+		        a.seancefin,
+		        a.acceptee,
+		        a.classe,
+		        a.specialite,
+		        a.groupe,
+		        e.id,           
+		        e.nom,
+		        e.prenom,
+		        e.grade,
+		        e.num_tel,
+		        e.nbAbsences
+		      )
+		      FROM Rattrappage a
+		      JOIN a.enseignant e
+		      WHERE a.acceptee = "oui" 
+		    """)
+	List<RattrapageDTO> findAllAccWithEnseignant() ;
+>>>>>>> 114a7e1ddfab77607dbef96c7263e1d87e4da506
 }

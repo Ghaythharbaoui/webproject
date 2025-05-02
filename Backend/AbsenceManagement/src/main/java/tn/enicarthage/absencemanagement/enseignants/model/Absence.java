@@ -63,9 +63,13 @@ public  class Absence implements Serializable{
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=true)
 	private Aceptee pinned;
+	
+	
 	@ManyToOne(cascade = CascadeType.ALL
 			,/*fetch = FetchType.EAGER*/fetch = FetchType.LAZY)
 			private Enseignant enseignant;
+	
+	
 	@JsonIgnore
 	 @ManyToMany(mappedBy = "absencesEpinglees")
 	    private List<Etudiant> etudiantsQuiEpinglent;

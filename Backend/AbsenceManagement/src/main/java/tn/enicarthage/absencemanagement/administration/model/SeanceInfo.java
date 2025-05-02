@@ -17,5 +17,6 @@ import tn.enicarthage.absencemanagement.enseignants.model.numSeance;
 public class SeanceInfo {
 	private Aceptee IsRattrapage;
 	private Long idens;
+	private String salle;
 
 }

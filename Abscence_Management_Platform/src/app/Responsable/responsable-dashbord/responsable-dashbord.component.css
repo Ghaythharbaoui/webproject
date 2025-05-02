@@ -1,16 +1,22 @@
-.dashboard{
-    display:flex;
+.dashboard {
+    display: flex;
     flex-direction: row;
-    height:100%;
-    width:100%;
-    background-color: #F4F6F9;
-   
-}
-app-sidebar{
+    /* fill the viewport */
     height: 100vh;
-    margin: 0px;
-    
-}
-.content{
-    margin-left:100px;
-}
+    width: 100%;
+    background-color: #F4F6F9;
+  }
+  
+  /* target your admin sidebar component */
+  app-res-slider {
+    height: 100vh;
+    margin: 0;
+  }
+  
+  /* make content also fill the height */
+  .content {
+    margin-left: 100px;
+    height: 100vh;
+    overflow: auto;  /* if your inner views scroll */
+  }
+  

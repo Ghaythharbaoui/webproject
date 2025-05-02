@@ -16,52 +16,67 @@ import { CatchUpRequestFormComponent } from './catch-up-request-form/catch-up-re
 import { RequestListComponent } from './request-list/request-list.component';
 import { HistoriqueTeacherComponent } from './historique-teacher/historique-teacher.component';
 import { EmploisTeacherComponent } from './emplois-teacher/emplois-teacher.component';
-import { AdminLogComponent } from './Responsable/admin-log/admin-log.component';
-import { SignupAdminComponent } from './Responsable/signup-admin/signup-admin.component';
 import { ResponsableDashbordComponent } from './Responsable/responsable-dashbord/responsable-dashbord.component';
 import { AbsListComponent } from './Responsable/abs-list/abs-list.component';
+import { RoleGuard } from './guards/role.guard';
+import { PendingAbsencesComponent } from './Responsable/pending-absences/pending-absences.component';
+import { PendingRattrapagesComponent } from './Responsable/pending-rattrapages/pending-rattrapages.component';
 
 
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
-    { path: 'home', component: MainComponent },
-    { path: 'student_login', component: LoginComponent },
-    { path: 'student_signup', component: SignupComponent },
-    {path :'Admin_Login' ,   component: AdminLogComponent } ,
-    {path :'Admin_signup' ,   component: SignupAdminComponent } ,
+  { path: 'home', component: MainComponent },
+  { path: '', redirectTo: 'student_login', pathMatch: 'full' },
+  { path: 'student_login', component: LoginComponent },
+  { path: 'student_signup', component: SignupComponent },
 
-    {
-      path: 'student_dashboard',
-        component: DashboardComponent,
-        children: [
-          { path: 'Accueil', component: AccueilEtdComponent },
-          { path: 'abs&ratts', component: AbsRattEtdComponent },
-          { path: 'Emplois', component: EmploisTempsComponent },
-          { path: 'Historique', component: HistoriqueComponent },
-          { path: 'Options', component:  OptionsComponent },
-          { path: '', component:  AccueilEtdComponent }
-        ]
-      },{
-        path: 'teacher_dashboard',
-          component: DashboardTeacherComponent,
-          children: [
-            { path: 'Accueil_teacher', component: AccueilTeacherComponent },
-            { path: 'abs-demande', component: AbsenceRequestFormComponent },
-            { path: 'ratt-demande', component: CatchUpRequestFormComponent },
-            { path: 'teacher-demande', component: RequestListComponent },
-            { path: 'teacher-historique', component: HistoriqueTeacherComponent },
-            { path: 'teacher-emploi', component: EmploisTeacherComponent },
-            { path: '', component:  AccueilTeacherComponent }
-          ]
-        },
-        {
-          path : 'res_dashbord',
-          component: ResponsableDashbordComponent,
-          children: [
-            {
-              path: "list-abs" , component: AbsListComponent
-            }
-          ]
-        }
+  {
+    path: 'student_dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: 'Accueil', component: AccueilEtdComponent },
+      { path: 'abs&ratts', component: AbsRattEtdComponent },
+      { path: 'Emplois', component: EmploisTempsComponent },
+      { path: 'Historique', component: HistoriqueComponent },
+      { path: 'Options', component: OptionsComponent },
+      { path: '', component: AccueilEtdComponent }
+    ],
+    canActivate: [RoleGuard],
+    data: { role: 'ETUDIANT' }
+  }, {
+    path: 'teacher_dashboard',
+    component: DashboardTeacherComponent,
+    children: [
+      { path: 'Accueil_teacher', component: AccueilTeacherComponent },
+      { path: 'abs-demande', component: AbsenceRequestFormComponent },
+      { path: 'ratt-demande', component: CatchUpRequestFormComponent },
+      { path: 'teacher-demande', component: RequestListComponent },
+      { path: 'teacher-historique', component: HistoriqueTeacherComponent },
+      { path: 'teacher-emploi', component: EmploisTeacherComponent },
+      { path: '', component: AccueilTeacherComponent }
+    ],
+    canActivate: [RoleGuard],
+    data: { role: 'ENSEIGNANT' }
+  },
+
+  {
+    path: 'res_dashbord',
+    component: ResponsableDashbordComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'ADMIN' },
+    children: [
+      {
+        path: 'list-abs', component: PendingAbsencesComponent
+      },
+      // … other admin child routes …
+
+      { path: 'pending_rattrapages', component: PendingRattrapagesComponent },
+      { path: '', redirectTo: 'list-abs', pathMatch: 'full' },
+
+    ],
+  }
+
+  ,
+  { path: '**', redirectTo: 'student_login' }
+
 ];

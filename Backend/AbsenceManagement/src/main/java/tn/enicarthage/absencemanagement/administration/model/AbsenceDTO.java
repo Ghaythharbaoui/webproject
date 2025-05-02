@@ -20,7 +20,6 @@ import lombok.ToString;
 import tn.enicarthage.absencemanagement.enseignants.model.Aceptee;
 import tn.enicarthage.absencemanagement.enseignants.model.Enseignant;
 import tn.enicarthage.absencemanagement.enseignants.model.numSeance;
-import tn.enicarthage.absencemanagement.etudiants.DTO.AbseanceStusresponse;
 import tn.enicarthage.absencemanagement.etudiants.model.Etudiant;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,15 +39,9 @@ public class AbsenceDTO {
 	private String grade;
 	private String num_tel;
 	private int nbAbsences;
+	
+	
+	
 
-	public AbseanceStusresponse TransformAb(AbsenceDTO absence)
-	{
-		AbseanceStusresponse absenceStusresponse = new AbseanceStusresponse();
-		absenceStusresponse.setNomEnseignant(absence.getNom());
-		absenceStusresponse.setPrenomEnseignant(absence.getPrenom());
-		absenceStusresponse.setDate_db(absence.getDate_db());
-		absenceStusresponse.setDate_fin(absence.getDate_fin());
-		return absenceStusresponse;
-	}
 
 }

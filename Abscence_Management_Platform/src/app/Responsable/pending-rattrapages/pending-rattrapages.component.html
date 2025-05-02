@@ -1,0 +1,64 @@
+<div class="pending-rattrapages">
+    <h2>Demandes de rattrapages en attente</h2>
+    <div *ngIf="loading">Chargement…</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <div *ngIf="!loading && requests.length === 0">
+      Aucune demande.
+    </div>
+  
+    <div class="cards" *ngIf="requests.length">
+      <div class="card" *ngFor="let req of requests">
+        <h3>{{ req.prenom }} {{ req.nom }}</h3>
+        <p><strong>Période:</strong>
+           {{ req.date_db | date:'dd/MM/yyyy' }} – {{ req.date_fin | date:'dd/MM/yyyy' }}
+        </p>
+        <p><strong>Classe:</strong> {{ req.classe }} / {{ req.specialite }} / {{ req.groupe }}</p>
+  
+        <div class="dropdowns">
+          <button (click)="onLoadSeances(req)">
+            Charger séances dispo
+          </button>
+        
+          <!-- 1) Dates+Séances -->
+          <select
+            *ngIf="seancesMap.get(req.id)?.options"
+            name="dateSeance-{{req.id}}"
+            [(ngModel)]="seancesMap.get(req.id)!.selectedOption"
+            (ngModelChange)="onOptionSelect(req, $event)"
+          >
+            <option [ngValue]="undefined">— Choisir date & séance —</option>
+            <option
+              *ngFor="let o of seancesMap.get(req.id)!.options"
+              [ngValue]="o">
+              {{ o.day }} séance {{ o.seance }} le {{ o.date }}
+            </option>
+          </select>
+        
+          <!-- 2) Salles -->
+          <select
+            *ngIf="seancesMap.get(req.id)?.salles"
+            name="salleSelect-{{req.id}}"
+            [(ngModel)]="seancesMap.get(req.id)!.selectedSalle"
+          >
+            <option [ngValue]="undefined">— Choisir salle —</option>
+            <option
+              *ngFor="let s of seancesMap.get(req.id)!.salles"
+              [value]="s"
+            >
+              {{ s }}
+            </option>
+          </select>
+        </div>
+        
+        
+  
+        <button
+          class="accept-btn"
+          (click)="onAccept(req)"
+          [disabled]="!seancesMap.get(req.id)?.selectedSalle">
+          Accepter rattrapage
+        </button>
+      </div>
+    </div>
+  </div>
+  

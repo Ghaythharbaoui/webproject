@@ -17,11 +17,13 @@ public interface SeanceRepository extends JpaRepository<Seance, Integer>{
 	@Query("""
 		      SELECT new tn.enicarthage.absencemanagement.administration.model.SeanceInfo(
 		          s.ISrattrappage,
-		          e.id
+		          e.id,
+		          sal.noSalle
 		        
 		      )
 		      FROM Seance s
 		      JOIN s.enseignant e
+		      JOIN s.salle sal
 		      WHERE s.id = :ids
 		    """)
 		   SeanceInfo IsRattrapage(

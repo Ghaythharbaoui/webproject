@@ -1,6 +1,7 @@
 package tn.enicarthage.absencemanagement.administration.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,4 +33,23 @@ public class EmploiTempsService {
 		    ) {
 		        return repository.findAllRows();
 		    }
+	 
+	 
+	 public List<String> getAllClasses() {
+	        return repository.findAllClasses().stream()
+	                .map(Enum::name)
+	                .collect(Collectors.toList());
+	    }
+
+	    public List<String> getSpecialitesByClasse(Classe classe) {
+	        return repository.findSpecialitesByClasse(classe).stream()
+	                .map(Enum::name)
+	                .collect(Collectors.toList());
+	    }
+
+	    public List<String> getGroupesByClasseAndSpecialite(Classe classe, Specialite specialite) {
+	        return repository.findGroupesByClasseAndSpecialite(classe, specialite).stream()
+	                .map(Enum::name)
+	                .collect(Collectors.toList());
+	    }
 }

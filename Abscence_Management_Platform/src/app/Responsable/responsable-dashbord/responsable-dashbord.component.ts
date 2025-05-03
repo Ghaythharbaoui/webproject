@@ -4,6 +4,7 @@ import { Router } from 'express';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
+  standalone: true,
   selector: 'app-responsable-dashbord',
   imports: [ResSliderComponent,RouterOutlet],
   templateUrl: './responsable-dashbord.component.html',

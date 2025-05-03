@@ -14,6 +14,7 @@ import tn.enicarthage.absencemanagement.administration.repository.AbsenceReposit
 import tn.enicarthage.absencemanagement.administration.repository.EnseignantRepository;
 import tn.enicarthage.absencemanagement.enseignants.model.Absence;
 import tn.enicarthage.absencemanagement.enseignants.model.AbsenceDTOENS;
+import tn.enicarthage.absencemanagement.enseignants.model.Aceptee;
 import tn.enicarthage.absencemanagement.enseignants.model.Enseignant;
 import tn.enicarthage.absencemanagement.enseignants.model.NewAbsenceRequest;
 @AllArgsConstructor
@@ -28,7 +29,9 @@ public class AbsenceService {
 	    }
 	 
 	 
-	 
+	 public List<AbsenceDTO> getAllProcessedAbsences() {
+			return absenceRepository.findAllProcessedWithEnseignant();
+		}
 	 
 	 
 	 
@@ -55,6 +58,7 @@ public class AbsenceService {
 	            ));
 	        abs.setEnseignant(ens);
 
+
 	        // pas de liste d’étudiants épingleurs pour l’instant
 	        // absencesEpinglees géré ailleurs
 
@@ -79,6 +83,30 @@ public class AbsenceService {
 	            a.getAcceptee() != null ? a.getAcceptee().name() : null,
 	            a.getPinned()   != null ? a.getPinned().name()   : null
 	        );
+	    }
+	    
+	    
+	    @Transactional
+	    public void updateAbsenceAcceptee(Long absenceId, Aceptee acceptee) {
+	        Absence absence = absenceRepository.findById(absenceId)
+	                .orElseThrow(() -> new IllegalArgumentException("Absence introuvable : " + absenceId));
+
+	        // Update acceptee status
+	        absence.setAcceptee(acceptee);
+
+	        // Increment nbAbsences if accepted
+	        if (acceptee == Aceptee.oui) {
+	            Enseignant enseignant = absence.getEnseignant();
+	            if (enseignant != null) {
+	                enseignant.setNbAbsences(enseignant.getNbAbsences() + 1);
+	                enseignantRepo.save(enseignant);
+	            } else {
+	                throw new IllegalStateException("Enseignant non associé à l'absence : " + absenceId);
+	            }
+	        }
+
+	        // Save the updated absence
+	        absenceRepository.save(absence);
 	    }
 	
 }

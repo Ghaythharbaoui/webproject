@@ -24,20 +24,23 @@ import tn.enicarthage.absencemanagement.enseignants.model.NewAbsenceRequest;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api")
 public class AbsenceController {
 	@Autowired
  private final AbsenceService absenceService;
-	 @GetMapping("/pending_absences")
+	 @GetMapping("/admin/pending_absences")
 	    public List<AbsenceDTO> getAllAbsences() {
 	        return absenceService.getAllAbsences();
 	 }
 	 
 	 
+	 @GetMapping("/admin/processed_absences")
+		public List<AbsenceDTO> getAllProcessedAbsences() {
+			return absenceService.getAllProcessedAbsences();
+		}
 	 
 	 
-	 
-	 @PostMapping("/creerAbs")
+	 @PostMapping("/enseignant/creerAbs")
 	    public ResponseEntity<Long> createAbsence(
 	        @RequestBody NewAbsenceRequest req
 	    ) {
@@ -55,4 +58,14 @@ public class AbsenceController {
 	    ) {
 	        return absenceService.getByEnseignant(enseignantId);
 	    }
+	 
+	 
+	 @PostMapping("/admin/absences/respond")
+		public ResponseEntity<Void> respondToAbsence(
+			@RequestParam Long absenceId,
+			@RequestParam Aceptee acceptee
+		) {
+			absenceService.updateAbsenceAcceptee(absenceId, acceptee);
+			return ResponseEntity.noContent().build();
+		}
 }

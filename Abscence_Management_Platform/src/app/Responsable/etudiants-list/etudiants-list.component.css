@@ -1,0 +1,28 @@
+.etudiants-list {
+    padding: 20px;
+  }
+  
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .card h3 {
+    margin: 0 0 10px;
+  }
+  
+  .card p {
+    margin: 5px 0;
+  }
+  
+  .error {
+    color: red;
+  }

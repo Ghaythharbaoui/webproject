@@ -1,65 +1,64 @@
-<div class="makeup-request-form">
-    <h2>Déposer une demande de rattrapage</h2>
-    <form  (ngSubmit)="onSubmit()">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="dateDebut">Date Début</label>
-          <input type="date" id="dateDebut" formControlName="dateDebut" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="dateFin">Date Fin</label>
-          <input type="date" id="dateFin" formControlName="dateFin" class="form-control">
-        </div>
-      </div>
+<div class="rattrapage-request-form">
+  <h2>Déposer une demande de rattrapage</h2>
   
-      <div class="form-row">
-        <div class="form-group">
-          <label for="classe">Classe</label>
-          <select id="classe" formControlName="classe" class="form-control">
-            <option value="">Sélectionner une classe</option>
-            <option value="Classe 1">Classe 1</option>
-            <option value="Classe 2">Classe 2</option>
-            <!-- Add more classes dynamically from your data -->
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="specialite">Spécialité</label>
-          <select id="specialite" formControlName="specialite" class="form-control">
-            <option value="">Sélectionner une spécialité</option>
-            <option value="Informatique">Informatique</option>
-            <option value="Autre Spécialité">Autre Spécialité</option>
-            <!-- Add more specialities dynamically -->
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="groupe">Groupe</label>
-          <select id="groupe" formControlName="groupe" class="form-control">
-            <option value="">Sélectionner un groupe</option>
-            <option value="Groupe A">Groupe A</option>
-            <option value="Groupe B">Groupe B</option>
-            <option value="Groupe C">Groupe C</option>
-            <option value="Groupe D">Groupe D</option>
-            <!-- Add more groups dynamically -->
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="idAbsence">id Absence</label>
-          <input type="text" id="idAbsence" formControlName="idAbsence" class="form-control">
-        </div>
-      </div>
-  
-  
-      <div class="form-group">
-        <label for="label">Label</label>
-        <input type="text" id="label" formControlName="label" class="form-control">
-      </div>
-  
-      <div class="form-group">
-        <label for="commentaire">Commentaire Optionnelle</label>
-        <textarea id="commentaire" formControlName="commentaire" class="form-control"></textarea>
-      </div>
-  
-  
-      <button type="submit" class="btn-primary">Envoyer</button>
-    </form>
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
   </div>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="rattrapageForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="dateDebut">Date Début</label>
+        <input type="date" id="dateDebut" formControlName="dateDebut" class="form-control" [ngClass]="{'is-invalid': rattrapageForm.get('dateDebut')?.invalid && rattrapageForm.get('dateDebut')?.touched}">
+        <div *ngIf="rattrapageForm.get('dateDebut')?.invalid && rattrapageForm.get('dateDebut')?.touched" class="invalid-feedback">
+          La date de début est requise.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dateFin">Date Fin</label>
+        <input type="date" id="dateFin" formControlName="dateFin" class="form-control" [ngClass]="{'is-invalid': rattrapageForm.get('dateFin')?.invalid && rattrapageForm.get('dateFin')?.touched}">
+        <div *ngIf="rattrapageForm.get('dateFin')?.invalid && rattrapageForm.get('dateFin')?.touched" class="invalid-feedback">
+          La date de fin est requise.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="classe">Classe</label>
+        <select id="classe" formControlName="classe" class="form-control" [ngClass]="{'is-invalid': rattrapageForm.get('classe')?.invalid && rattrapageForm.get('classe')?.touched}">
+          <option value="">Sélectionner une classe</option>
+          <option *ngFor="let classe of classes" [value]="classe">{{ classe }}</option>
+        </select>
+        <div *ngIf="rattrapageForm.get('classe')?.invalid && rattrapageForm.get('classe')?.touched" class="invalid-feedback">
+          La classe est requise.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="specialite">Spécialité</label>
+        <select id="specialite" formControlName="specialite" class="form-control" [ngClass]="{'is-invalid': rattrapageForm.get('specialite')?.invalid && rattrapageForm.get('specialite')?.touched}" [disabled]="!classes.length || !rattrapageForm.get('classe')?.value">
+          <option value="">Sélectionner une spécialité</option>
+          <option *ngFor="let specialite of specialites" [value]="specialite">{{ specialite }}</option>
+        </select>
+        <div *ngIf="rattrapageForm.get('specialite')?.invalid && rattrapageForm.get('specialite')?.touched" class="invalid-feedback">
+          La spécialité est requise.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="groupe">Groupe</label>
+        <select id="groupe" formControlName="groupe" class="form-control" [ngClass]="{'is-invalid': rattrapageForm.get('groupe')?.invalid && rattrapageForm.get('groupe')?.touched}" [disabled]="!specialites.length || !rattrapageForm.get('specialite')?.value">
+          <option value="">Sélectionner un groupe</option>
+          <option *ngFor="let groupe of groupes" [value]="groupe">{{ groupe }}</option>
+        </select>
+        <div *ngIf="rattrapageForm.get('groupe')?.invalid && rattrapageForm.get('groupe')?.touched" class="invalid-feedback">
+          Le groupe est requis.
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-primary" [disabled]="rattrapageForm.invalid">Envoyer</button>
+  </form>
+</div>

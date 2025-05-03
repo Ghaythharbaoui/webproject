@@ -1,83 +1,74 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-//import { AbsenceService } from '../absence.service'; // Assuming you'll create this service
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { AbsenceService, NewAbsenceRequest } from '../dashboard-teacher/absence.service';
+import { AuthService } from '../auth.service';
+import { NumSeance, NumSeanceOptions } from '../dashboard-teacher/num-seance.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-absence-request-form',
-  imports: [RouterLink],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './absence-request-form.component.html',
-  styleUrls: ['./absence-request-form.component.css'],
+  styleUrls: ['./absence-request-form.component.css']
 })
-export class AbsenceRequestFormComponent  {
- /*implements OnInit 
- 
- absenceForm: FormGroup;
-  uploadFile: File | null = null;
+export class AbsenceRequestFormComponent implements OnInit {
+  absenceForm: FormGroup;
+  seanceOptions = NumSeanceOptions;
+  error: string | null = null;
+  success: string | null = null;
+  enseignantId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private absenceService: AbsenceService // Inject the service
+    private absenceService: AbsenceService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.absenceForm = this.fb.group({
       dateDebut: ['', Validators.required],
-      heureDebut: ['', Validators.required],
       dateFin: ['', Validators.required],
-      heureFin: ['', Validators.required],
-      label: [''], // "Label" field
-      justification: [''], // "Justification Optionnelle"
-      uploadJustificatif: [null], // For file upload
+      seanceDebut: ['', Validators.required],
+      seanceFin: ['', Validators.required]
     });
   }
 
-  ngOnInit(): void {}
-
-  onFileChange(event: any): void {
-    if (event.target.files.length > 0) {
-      this.uploadFile = event.target.files[0];
-      this.absenceForm.patchValue({
-        uploadJustificatif: this.uploadFile,
-      });
-    }
+  ngOnInit(): void {
+    // Fetch enseignantId from AuthService
+    this.authService.userId$.subscribe(id => {
+      this.enseignantId = id;
+      if (!id) {
+        this.error = 'Vous devez être connecté pour soumettre une demande.';
+        this.absenceForm.disable();
+      }
+    });
   }
 
   onSubmit(): void {
-    if (this.absenceForm.valid) {
-      const formData = new FormData();
-      formData.append('dateDebut', this.absenceForm.get('dateDebut')?.value);
-      formData.append('heureDebut', this.absenceForm.get('heureDebut')?.value);
-      formData.append('dateFin', this.absenceForm.get('dateFin')?.value);
-      formData.append('heureFin', this.absenceForm.get('heureFin')?.value);
-      formData.append('label', this.absenceForm.get('label')?.value);
-      formData.append(
-        'justification',
-        this.absenceForm.get('justification')?.value
-      );
-      if (this.uploadFile) {
-        formData.append('justificatif', this.uploadFile, this.uploadFile.name);
-      }
+    if (this.absenceForm.valid && this.enseignantId) {
+      const formValue = this.absenceForm.value;
+      const request: NewAbsenceRequest = {
+        dateDebut: formValue.dateDebut, // Already in YYYY-MM-DD
+        dateFin: formValue.dateFin,
+        seanceDebut: formValue.seanceDebut,
+        seanceFin: formValue.seanceFin,
+        enseignantId: this.enseignantId
+      };
 
-      this.absenceService.submitAbsenceRequest(formData).subscribe({
-        // Call the service method
-        next: (response) => {
-          console.log('Absence request submitted successfully', response);
-          // Handle success (e.g., show success message, clear form)
+      this.absenceService.createAbsence(request).subscribe({
+        next: (id) => {
+          this.success = `Demande d'absence soumise avec succès (ID: ${id})`;
           this.absenceForm.reset();
-          this.uploadFile = null;
+          setTimeout(() => this.router.navigate(['/teacher_dashboard/teacher-demande']), 2000); // Redirect to requests list
         },
-        error: (error) => {
-          console.error('Error submitting absence request', error);
-          // Handle error (e.g., show error message)
-        },
+        error: (err) => {
+          this.error = 'Échec de la soumission de la demande. Veuillez réessayer.';
+          console.error('Error submitting absence:', err);
+        }
       });
     } else {
-      // Form is invalid, display validation errors if needed
-      console.log('Form is invalid');
+      this.error = 'Veuillez remplir tous les champs requis.';
     }
   }
-
-  onRemoveFile(): void {
-    this.uploadFile = null;
-    this.absenceForm.patchValue({ uploadJustificatif: null });
-  }*/
 }

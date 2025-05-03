@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin.service';
 import {
   RattrapageRequest,
-  SeancesDispo,
+  SeancesDispoMap,
   AccepterRattrapageRequest
 } from '../rattrapage.model';
 import { CommonModule } from '@angular/common';
-import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -21,25 +20,44 @@ export class PendingRattrapagesComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
-// instead of storing dispo & separate selectedDay/selectedSeance…
-seancesMap = new Map<number, {
-  options?: { date: string; day: string; seance: number }[];
-  selectedOption?: { date: string; day: string; seance: number };
-  salles?: string[];
-  selectedSalle?: string;
-}>();
+  seancesMap = new Map<
+    number,
+    {
+      options?: { date: string; day: string; seance: number }[];
+      selectedOption?: { date: string; day: string; seance: number };
+      salles?: string[];
+      selectedSalle?: string;
+    }
+  >();
 
+  // Mapping of English day names to French
+  private dayTranslations: { [key: string]: string } = {
+    MONDAY: 'Lundi',
+    TUESDAY: 'Mardi',
+    WEDNESDAY: 'Mercredi',
+    THURSDAY: 'Jeudi',
+    FRIDAY: 'Vendredi',
+    SATURDAY: 'Samedi',
+    SUNDAY: 'Dimanche'
+  };
 
   constructor(private admin: AdminService) {}
 
   ngOnInit() {
     this.admin.getPendingRattrapages().subscribe({
-      next: list => {
+      next: (list) => {
         this.requests = list;
+        // Initialize seancesMap for each request
+        list.forEach((req) => {
+          if (!this.seancesMap.has(req.id)) {
+            this.seancesMap.set(req.id, {});
+          }
+        });
         this.loading = false;
       },
-      error: () => {
+      error: (err) => {
         this.error = 'Impossible de charger les rattrapages.';
+        console.error('Error loading rattrapages:', err);
         this.loading = false;
       }
     });
@@ -48,6 +66,12 @@ seancesMap = new Map<number, {
   onLoadSeances(req: RattrapageRequest) {
     const key = req.id;
     const entry = this.seancesMap.get(key) || {};
+
+    // Avoid reloading if options are already loaded
+    if (entry.options) {
+      return;
+    }
+
     this.admin
       .getSeancesDispo(
         req.classe,
@@ -57,44 +81,69 @@ seancesMap = new Map<number, {
         this.format(req.date_fin),
         req.idens
       )
-      .subscribe(dispo => {
-        // flatten DayOfWeek → seance → dates into one list
-        const opts: { date: string; day: string; seance: number }[] = [];
-        Object.entries(dispo).forEach(([day, map]) => {
-          Object.entries(map).forEach(([sn, dates]) => {
-            const seanceNum = Number(sn);
-            dates.forEach(dateStr => {
-              opts.push({ date: dateStr, day, seance: seanceNum });
+      .subscribe({
+        next: (dispo: SeancesDispoMap) => {
+          const opts: { date: string; day: string; seance: number }[] = [];
+          Object.entries(dispo).forEach(([day, map]) => {
+            Object.entries(map).forEach(([sn, dates]: [string, string[]]) => {
+              const seanceNum = Number(sn);
+              dates.forEach((dateStr: string) => {
+                opts.push({ date: dateStr, day, seance: seanceNum });
+              });
             });
           });
-        });
-        entry.options = opts;
-        this.seancesMap.set(key, entry);
+          entry.options = opts;
+          this.seancesMap.set(key, entry);
+        },
+        error: (err) => {
+          this.error = 'Erreur lors du chargement des séances.';
+          console.error('Error loading seances:', err);
+        }
       });
   }
 
-  onOptionSelect(req: RattrapageRequest, opt: { date: string; day: string; seance: number }) {
-    console.log('Option selected:', opt);
+  onOptionSelect(
+    req: RattrapageRequest,
+    opt: { date: string; day: string; seance: number } | undefined
+  ) {
     const entry = this.seancesMap.get(req.id)!;
     entry.selectedOption = opt;
-    entry.salles = undefined;
-    entry.selectedSalle = undefined;
-    this.admin
-      .getSallesDispo(
-        opt.date,            // already "dd/MM/yyyy"
-        opt.day,
-        opt.seance
-      )
-      .subscribe(salles => {
-        entry.salles = salles;
-        console.log('Salles chargées:', salles);
-        this.seancesMap.set(req.id, entry);
+    entry.salles = undefined; // Reset salles
+    entry.selectedSalle = undefined; // Reset selected salle
+
+    if (opt) {
+      // Format seance as "S1", "S2", etc.
+      const seanceStr = `S${opt.seance}`;
+      console.log('Calling getSallesDispo with:', {
+        dateS: opt.date,
+        day: opt.day,
+        numS: seanceStr
       });
+
+      // Load salles for the selected option
+      this.admin
+        .getSallesDispo(opt.date, opt.day, seanceStr)
+        .subscribe({
+          next: (salles) => {
+            console.log('Salles received:', salles);
+            entry.salles = salles;
+            this.seancesMap.set(req.id, entry);
+          },
+          error: (err) => {
+            this.error = 'Erreur lors du chargement des salles.';
+            console.error('Error loading salles:', err);
+          }
+        });
+    } else {
+      this.seancesMap.set(req.id, entry);
+    }
   }
-  
 
-  
-
+  onSalleSelect(req: RattrapageRequest, salle: string | undefined) {
+    const entry = this.seancesMap.get(req.id)!;
+    entry.selectedSalle = salle;
+    this.seancesMap.set(req.id, entry);
+  }
 
   onAccept(req: RattrapageRequest) {
     const entry = this.seancesMap.get(req.id)!;
@@ -102,33 +151,63 @@ seancesMap = new Map<number, {
     const payload: AccepterRattrapageRequest = {
       rattrapageId: req.id,
       dateAff: opt.date,
-      seanceAff: opt.seance,
+      seanceAff: `S${opt.seance}`,
       salleId: entry.selectedSalle!,
       enseignantId: req.idens
     };
-    
+
+    console.log('Sending accepterRattrapage payload:', payload);
+
     this.admin.accepterRattrapage(payload).subscribe({
       next: () => {
-        this.requests = this.requests.filter(r => r.id !== req.id);
+        console.log('Rattrapage accepted successfully');
+        this.requests = this.requests.filter((r) => r.id !== req.id);
         this.seancesMap.delete(req.id);
       },
-      error: () => alert('Erreur lors de l’acceptation.')
+      error: (err) => {
+        const errorMessage = err.error?.message || err.statusText || 'Unknown error';
+        alert(`Erreur lors de l'acceptation: ${errorMessage}`);
+        console.error('Error accepting rattrapage:', {
+          status: err.status,
+          statusText: err.statusText,
+          message: err.error?.message,
+          error: err
+        });
+      }
     });
   }
 
+  onReject(req: RattrapageRequest) {
+    console.log('Rejecting rattrapage with ID:', req.id);
+
+    this.admin.rejeterRattrapage(req.id).subscribe({
+      next: () => {
+        console.log('Rattrapage rejected successfully');
+        this.requests = this.requests.filter((r) => r.id !== req.id);
+        this.seancesMap.delete(req.id);
+      },
+      error: (err) => {
+        const errorMessage = err.error?.message || err.statusText || 'Unknown error';
+        alert(`Erreur lors du refus: ${errorMessage}`);
+        console.error('Error rejecting rattrapage:', {
+          status: err.status,
+          statusText: err.statusText,
+          message: err.error?.message,
+          error: err
+        });
+      }
+    });
+  }
+
+  getFrenchDay(englishDay: string): string {
+    return this.dayTranslations[englishDay.toUpperCase()] || englishDay;
+  }
+
   private format(iso: string) {
-    // convert "YYYY-MM-DD" → "dd/MM/yyyy"
     const d = new Date(iso);
-    const dd = String(d.getDate()).padStart(2,'0');
-    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
     const yy = d.getFullYear();
     return `${dd}/${mm}/${yy}`;
   }
-
-
-  getSelectValue(event: Event): any {
-    const target = event.target as HTMLSelectElement;
-    return target.value;
-  }
-  
 }

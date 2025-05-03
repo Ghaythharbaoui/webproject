@@ -32,6 +32,7 @@ public abstract class User implements Serializable{
 	private Long id;
 	private String nom;
 	private String prenom;
+	@Column(unique = true)
 	private String email;
 	private String motdepass;
 	

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import tn.enicarthage.absencemanagement.administration.model.AbsenceDTO;
 import tn.enicarthage.absencemanagement.administration.model.AccepterRattrapageRequest;
+import tn.enicarthage.absencemanagement.administration.model.ProcessedRattrapageDTO;
 import tn.enicarthage.absencemanagement.administration.model.RattrapageDTO;
 import tn.enicarthage.absencemanagement.administration.service.AbsenceService;
 import tn.enicarthage.absencemanagement.administration.service.RattrapageService;
@@ -26,25 +27,29 @@ import tn.enicarthage.absencemanagement.enseignants.model.numSeance;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api")
 public class RattrapageController {
 	@Autowired
 	 private final RattrapageService rattrapageService;
-		 @GetMapping("/pending_rattrapages")
+		 @GetMapping("/admin/pending_rattrapages")
 		    public List<RattrapageDTO> getAllAbsences() {
 			 
 			 
 			 
 		        return rattrapageService.getAllRattrapages();
 		 }
-		 @GetMapping("/DateAffRatt")
+		 @GetMapping("/admin/DateAffRatt")
 		 public LocalDate getDateAff( @RequestParam int id) {
 			 return rattrapageService.getDateAffRatt(id);
 		 }
 		 
+		 @GetMapping("/admin/processed_rattrapages")
+			public List<ProcessedRattrapageDTO> getAllProcessedRattrapages() {
+				return rattrapageService.getAllProcessedRattrapages();
+			}
 		 
 		 
-		 @PostMapping("/accepter")
+		 @PostMapping("/admin/accepter")
 		    public ResponseEntity<Void> accepterRattrapage(
 		    		@RequestBody AccepterRattrapageRequest req
 		    ) {
@@ -59,7 +64,7 @@ public class RattrapageController {
 		    }
 		 
 		 
-		  @PostMapping("/rejeter")
+		  @PostMapping("/admin/rejeter")
 		    public ResponseEntity<Void> rejeterRattrapage(
 		        @RequestParam Long rattrapageId
 		    ) {
@@ -68,7 +73,7 @@ public class RattrapageController {
 		    }
 		  
 		  
-		  @PostMapping("/creer")
+		  @PostMapping("/enseignant/creer")
 		    public ResponseEntity<Long> createRattrapage(
 		        @RequestBody NewRattrapageRequest req
 		    ) {
@@ -78,7 +83,7 @@ public class RattrapageController {
 		            .body(newId);
 		    }
 		  
-		  @GetMapping("/rattrapages")
+		  @GetMapping("/enseignant/rattrapages")
 		    public List<RattrapageDTOENS> listByEnseignant(
 		        @RequestParam Long enseignantId
 		    ) {

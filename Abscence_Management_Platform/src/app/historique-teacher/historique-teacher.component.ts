@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-historique-teacher',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './historique-teacher.component.html',
-  styleUrl: './historique-teacher.component.css'
+  styleUrls: ['./historique-teacher.component.css']
 })
 export class HistoriqueTeacherComponent {
-
+  rattrapages: any[] = []; // Replace with actual rattrapage type
 }

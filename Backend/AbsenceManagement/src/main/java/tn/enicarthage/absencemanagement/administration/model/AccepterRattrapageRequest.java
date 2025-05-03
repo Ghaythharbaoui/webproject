@@ -10,7 +10,7 @@ import tn.enicarthage.absencemanagement.enseignants.model.numSeance;
 
 public record AccepterRattrapageRequest(
 	    Long rattrapageId,
-	    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	    
 	    LocalDate dateAff,
 	    numSeance seanceAff,
 	    String salleId,

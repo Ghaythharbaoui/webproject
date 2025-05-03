@@ -59,5 +59,15 @@ public interface EmploiTempsRepository extends JpaRepository<EmploiTemps,EmploiT
 		        FROM EmploiTemps e
 		    """)
 	  List<EmploiTempsRowsDTO> findAllRows();
+	  
+	  
+	  @Query("SELECT DISTINCT e.id.classe FROM EmploiTemps e")
+	    List<Classe> findAllClasses();
+
+	    @Query("SELECT DISTINCT e.id.specialite FROM EmploiTemps e WHERE e.id.classe = :classe")
+	    List<Specialite> findSpecialitesByClasse(@Param("classe") Classe classe);
+
+	    @Query("SELECT DISTINCT e.id.groupe FROM EmploiTemps e WHERE e.id.classe = :classe AND e.id.specialite = :specialite")
+	    List<Groupe> findGroupesByClasseAndSpecialite(@Param("classe") Classe classe, @Param("specialite") Specialite specialite);
 
 }

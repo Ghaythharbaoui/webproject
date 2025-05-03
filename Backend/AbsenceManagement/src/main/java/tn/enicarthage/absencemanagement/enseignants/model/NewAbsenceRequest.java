@@ -15,9 +15,9 @@ import lombok.Setter;
 @Setter
 public class NewAbsenceRequest {
   
-	  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	  //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
   private LocalDate dateDebut;
-	  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	  //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
   private LocalDate dateFin;
 
   private numSeance seanceDebut;

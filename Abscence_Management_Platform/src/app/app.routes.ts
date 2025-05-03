@@ -8,7 +8,6 @@ import { EmploisTempsComponent } from './emplois-temps/emplois-temps.component';
 import { HistoriqueComponent } from './historique/historique.component';
 import { OptionsComponent } from './options/options.component';
 import { SignupComponent } from './signup/signup.component';
-
 import { DashboardTeacherComponent } from './dashboard-teacher/dashboard-teacher.component';
 import { AccueilTeacherComponent } from './accueil-teacher/accueil-teacher.component';
 import { AbsenceRequestFormComponent } from './absence-request-form/absence-request-form.component';
@@ -21,8 +20,10 @@ import { AbsListComponent } from './Responsable/abs-list/abs-list.component';
 import { RoleGuard } from './guards/role.guard';
 import { PendingAbsencesComponent } from './Responsable/pending-absences/pending-absences.component';
 import { PendingRattrapagesComponent } from './Responsable/pending-rattrapages/pending-rattrapages.component';
-
-
+import { ProcessedAbsencesComponent } from './Responsable/processed-absences/processed-absences.component';
+import { ProcessedRattrapagesComponent } from './Responsable/processed-rattrapages/processed-rattrapages.component';
+import { EnseignantsListComponent } from './Responsable/enseignants-list/enseignants-list.component';
+import { EtudiantsListComponent } from './Responsable/etudiants-list/etudiants-list.component';
 
 export const routes: Routes = [
   { path: 'home', component: MainComponent },
@@ -43,7 +44,8 @@ export const routes: Routes = [
     ],
     canActivate: [RoleGuard],
     data: { role: 'ETUDIANT' }
-  }, {
+  },
+  {
     path: 'teacher_dashboard',
     component: DashboardTeacherComponent,
     children: [
@@ -58,25 +60,20 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { role: 'ENSEIGNANT' }
   },
-
   {
     path: 'res_dashbord',
     component: ResponsableDashbordComponent,
     canActivate: [RoleGuard],
     data: { role: 'ADMIN' },
     children: [
-      {
-        path: 'list-abs', component: PendingAbsencesComponent
-      },
-      // … other admin child routes …
-
+      { path: 'list-abs', component: PendingAbsencesComponent },
       { path: 'pending_rattrapages', component: PendingRattrapagesComponent },
-      { path: '', redirectTo: 'list-abs', pathMatch: 'full' },
-
-    ],
-  }
-
-  ,
+      { path: 'processed-absences', component: ProcessedAbsencesComponent },
+      { path: 'processed-rattrapages', component: ProcessedRattrapagesComponent },
+      { path: 'enseignants', component: EnseignantsListComponent },
+      { path: 'etudiants', component: EtudiantsListComponent },
+      { path: '', redirectTo: 'list-abs', pathMatch: 'full' }
+    ]
+  },
   { path: '**', redirectTo: 'student_login' }
-
 ];

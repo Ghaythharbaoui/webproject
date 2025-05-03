@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import tn.enicarthage.absencemanagement.administration.model.EmploiTempsRowsDTO;
 import tn.enicarthage.absencemanagement.administration.service.EmploiTempsService;
 import tn.enicarthage.absencemanagement.etudiants.model.Classe;
-import tn.enicarthage.absencemanagement.etudiants.model.EmploiTemps;
 import tn.enicarthage.absencemanagement.etudiants.model.Groupe;
 import tn.enicarthage.absencemanagement.etudiants.model.Specialite;
 
@@ -25,12 +24,30 @@ public class EmploiTempsController {
 
     @GetMapping
     public List<EmploiTempsRowsDTO> fetchTimetable(
-        @RequestParam Classe classe,
-        @RequestParam Specialite specialite,
-        @RequestParam Groupe groupe
+            @RequestParam Classe classe,
+            @RequestParam Specialite specialite,
+            @RequestParam Groupe groupe
     ) {
-        return service.getTimetableRows(classe, specialite, groupe) .stream()
+        return service.getTimetableRows(classe, specialite, groupe).stream()
                 .sorted(Comparator.comparing(EmploiTempsRowsDTO::getJourr))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/classes")
+    public List<String> getAllClasses() {
+        return service.getAllClasses();
+    }
+
+    @GetMapping("/specialites")
+    public List<String> getSpecialitesByClasse(@RequestParam Classe classe) {
+        return service.getSpecialitesByClasse(classe);
+    }
+
+    @GetMapping("/groupes")
+    public List<String> getGroupesByClasseAndSpecialite(
+            @RequestParam Classe classe,
+            @RequestParam Specialite specialite
+    ) {
+        return service.getGroupesByClasseAndSpecialite(classe, specialite);
     }
 }

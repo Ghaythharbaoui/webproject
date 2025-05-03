@@ -2,7 +2,7 @@ package tn.enicarthage.absencemanagement.etudiants.model;
 
 import java.time.DayOfWeek;
 
-public enum jour {
+public enum jour  implements Comparable<jour>  {
   LUNDI, MARDI, MERCREDI, JEUDI, VENDREDI, SAMEDI;
   
   

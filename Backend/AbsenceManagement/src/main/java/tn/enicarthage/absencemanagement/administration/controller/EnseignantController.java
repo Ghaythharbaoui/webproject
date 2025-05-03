@@ -16,7 +16,7 @@ import tn.enicarthage.absencemanagement.enseignants.model.Enseignant;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/admin")
 public class EnseignantController {
 	@Autowired
  private final EnseignantService enseignantService;

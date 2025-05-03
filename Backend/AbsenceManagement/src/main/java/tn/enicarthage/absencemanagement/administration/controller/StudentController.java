@@ -13,7 +13,7 @@ import tn.enicarthage.absencemanagement.administration.service.StudentService;
 import tn.enicarthage.absencemanagement.etudiants.model.Etudiant;
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/admin")
 public class StudentController {
 	@Autowired
 	 private final StudentService studentService;

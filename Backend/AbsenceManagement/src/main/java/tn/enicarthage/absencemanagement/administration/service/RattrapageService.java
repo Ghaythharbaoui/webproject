@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import tn.enicarthage.absencemanagement.administration.model.AbsenceDTO;
+import tn.enicarthage.absencemanagement.administration.model.ProcessedRattrapageDTO;
 import tn.enicarthage.absencemanagement.administration.model.RattrapageDTO;
 import tn.enicarthage.absencemanagement.administration.model.Salle;
 import tn.enicarthage.absencemanagement.administration.repository.AbsenceRepository;
@@ -56,6 +57,10 @@ public class RattrapageService {
 	 public LocalDate getDateAffRatt(int ids) {
 	        return rattrapageRepository.findDateAffRattById( ids);
 	    }
+	 
+	 public List<ProcessedRattrapageDTO> getAllProcessedRattrapages() {
+			return rattrapageRepository.findAllProcessedWithEnseignant();
+		}
 	 
 	
      

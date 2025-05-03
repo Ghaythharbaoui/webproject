@@ -17,4 +17,27 @@ public class StudentService {
 	        return studentRepository.findAll();
 	    }
 	 
+	 
+	 public EtudiantDTO findByEmail(String email) {
+	        Etudiant etudiant = studentRepository.findByEmail(email)
+	                .orElse(null);
+	        if (etudiant == null) {
+	            return null;
+	        }
+	        return toDTO(etudiant);
+	    }
+
+	    private EtudiantDTO toDTO(Etudiant etudiant) {
+	        return new EtudiantDTO(
+	                etudiant.getId(),
+	                etudiant.getNom(),
+	                etudiant.getPrenom(),
+	                etudiant.getEmail(),
+	                etudiant.getMotdepass(),
+	                etudiant.getClasse(),
+	                etudiant.getSpecialite(),
+	                etudiant.getGroupe()
+	        );
+	    }
+	 
 }

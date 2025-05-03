@@ -75,5 +75,5 @@ export const routes: Routes = [
       { path: '', redirectTo: 'list-abs', pathMatch: 'full' }
     ]
   },
-  { path: '**', redirectTo: 'student_login' }
+  { path: '**', redirectTo: 'MainComponent' }
 ];

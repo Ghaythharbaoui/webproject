@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
   }
-
+  
   submit() {
     if (this.form.invalid) { return; }
 

@@ -66,6 +66,7 @@ a{
     margin: 0;                /* Remove default body margin if needed */
     padding: 0;
   }
+
   .bg-image {
     position: absolute;
     top: 0;

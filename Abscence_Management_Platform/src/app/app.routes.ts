@@ -16,7 +16,7 @@ import { RequestListComponent } from './request-list/request-list.component';
 import { HistoriqueTeacherComponent } from './historique-teacher/historique-teacher.component';
 import { EmploisTeacherComponent } from './emplois-teacher/emplois-teacher.component';
 import { ResponsableDashbordComponent } from './Responsable/responsable-dashbord/responsable-dashbord.component';
-import { AbsListComponent } from './Responsable/abs-list/abs-list.component';
+
 import { RoleGuard } from './guards/role.guard';
 import { PendingAbsencesComponent } from './Responsable/pending-absences/pending-absences.component';
 import { PendingRattrapagesComponent } from './Responsable/pending-rattrapages/pending-rattrapages.component';
@@ -24,6 +24,7 @@ import { ProcessedAbsencesComponent } from './Responsable/processed-absences/pro
 import { ProcessedRattrapagesComponent } from './Responsable/processed-rattrapages/processed-rattrapages.component';
 import { EnseignantsListComponent } from './Responsable/enseignants-list/enseignants-list.component';
 import { EtudiantsListComponent } from './Responsable/etudiants-list/etudiants-list.component';
+import { AcceptedRattrapagesComponent } from './accepted-rattrapages/accepted-rattrapages.component';
 
 export const routes: Routes = [
   { path: 'home', component: MainComponent },
@@ -36,6 +37,7 @@ export const routes: Routes = [
     component: DashboardComponent,
     children: [
       { path: 'Accueil', component: AccueilEtdComponent },
+      { path: 'Rattrapages', component: AcceptedRattrapagesComponent },
       { path: 'abs&ratts', component: AbsRattEtdComponent },
       { path: 'Emplois', component: EmploisTempsComponent },
       { path: 'Historique', component: HistoriqueComponent },

@@ -50,4 +50,16 @@ public class EmploiTempsController {
     ) {
         return service.getGroupesByClasseAndSpecialite(classe, specialite);
     }
+    
+    @GetMapping("/All")
+    public List<EmploiTempsRowsDTO> getAllRows(
+	        
+		    ) {
+		        return service.getAllRows().stream()
+		                .sorted(Comparator.comparing(EmploiTempsRowsDTO::getJourr))
+		                .collect(Collectors.toList());
+		    }
+    
+    
+    
 }

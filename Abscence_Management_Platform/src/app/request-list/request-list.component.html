@@ -1,60 +1,65 @@
 <div class="request-list">
-    <h2>{{ title }}</h2>
-  
-    <div class="filters">
-      <select > 
-        <option value="">Classe (All)</option>
-        <option value="Classe 1">Classe 1</option>
-        <option value="Classe 2">Classe 2</option>
-        <!-- Add more classes dynamically from your data -->
-      </select>
-      <select  >
-        <option value="">Spec (All)</option>
-        <option value="Informatique">Informatique</option>
-        <!-- Add more specs -->
-      </select>
-      <select >
-        <option value="">Groupe (All)</option>
-        <option value="Groupe A">Groupe A</option>
-        <option value="Groupe B">Groupe B</option>
-        <option value="Groupe C">Groupe C</option>
-        <option value="Groupe D">Groupe D</option>
-        <!-- Add more groups -->
-      </select>
-      <select >
-        <option value="">Status (All)</option>
-        <option value="En Attente">En Attente</option>
-        <option value="Acceptée">Acceptée</option>
-        <option value="Refusée">Refusée</option>
-      </select>
-      <input type="text" placeholder="Label" >
-      <input type="text" placeholder="Search Label" >
-    </div>
-  
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Date Range</th>
-          <th>Classe : Spécialité : Groupe</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let request of requests">
+  <h2>{{ title }}</h2>
+
+  <div class="filters">
+    <select [(ngModel)]="filterClasse" (ngModelChange)="applyFilters(); loadSpecialites()">
+      <option value="">Classe (Tous)</option>
+      <option *ngFor="let classe of classes" [value]="classe">{{ classe }}</option>
+    </select>
+    <select [(ngModel)]="filterSpecialite" (ngModelChange)="applyFilters(); loadGroupes()" [disabled]="!filterClasse">
+      <option value="">Spécialité (Tous)</option>
+      <option *ngFor="let specialite of specialites" [value]="specialite">{{ specialite }}</option>
+    </select>
+    <select [(ngModel)]="filterGroupe" (ngModelChange)="applyFilters()" [disabled]="!filterSpecialite">
+      <option value="">Groupe (Tous)</option>
+      <option *ngFor="let groupe of groupes" [value]="groupe">{{ groupe }}</option>
+    </select>
+    <select [(ngModel)]="filterStatus" (ngModelChange)="applyFilters()">
+      <option value="">Statut (Tous)</option>
+      <option value="En Attente">En Attente</option>
+      <option value="Acceptée">Acceptée</option>
+      <option value="Refusée">Refusée</option>
+    </select>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Période</th>
+        <th>Classe : Spécialité : Groupe</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let request of filteredRequests">
+        <tr [class.expandable]="request.acceptee === 'oui'" (click)="request.acceptee === 'oui' && toggleRow(request.id)">
           <td>{{ request.id }}</td>
-          <td>{{ request.dateRange }}</td> <!-- Format date range as needed -->
-          <td>{{ request.classGroup }}</td>
+          <td>{{ getDateRange(request) }}</td>
+          <td>{{ getClassGroup(request) }}</td>
           <td>
-            <span >
-              {{ request.status }}
+            <span [ngClass]="{
+              'status-pending': getStatus(request.acceptee) === 'En Attente',
+              'status-accepted': getStatus(request.acceptee) === 'Acceptée',
+              'status-rejected': getStatus(request.acceptee) === 'Refusée'
+            }">
+              {{ getStatus(request.acceptee) }}
             </span>
           </td>
         </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!--
-  [(ngModel)]="filterClasse" (change)="applyFilters()"
-  -->
+        <tr class="details-row" *ngIf="request.acceptee === 'oui' && isRowExpanded(request.id)">
+          <td colspan="4">
+            <div class="details-content">
+              <p><strong>Date Affectée:</strong> {{ getDateAffectee(request) }}</p>
+              <p><strong>Séance Affectée:</strong> {{ request.seanceAffectee || 'N/A' }}</p>
+              <p><strong>Salle Affectée:</strong> {{ request.salleaff || 'N/A' }}</p>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      <tr *ngIf="filteredRequests.length === 0">
+        <td colspan="4">Aucune demande trouvée.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,13 +1,29 @@
 <div class="pending-rattrapages">
   <h2>Demandes de rattrapages en attente</h2>
+
+  <div class="filters">
+    <select [(ngModel)]="filterClasse" (ngModelChange)="applyFilters(); loadSpecialites()">
+      <option value="">Classe (Tous)</option>
+      <option *ngFor="let classe of classes" [value]="classe">{{ classe }}</option>
+    </select>
+    <select [(ngModel)]="filterSpecialite" (ngModelChange)="applyFilters(); loadGroupes()" [disabled]="!filterClasse">
+      <option value="">Spécialité (Tous)</option>
+      <option *ngFor="let specialite of specialites" [value]="specialite">{{ specialite }}</option>
+    </select>
+    <select [(ngModel)]="filterGroupe" (ngModelChange)="applyFilters()" [disabled]="!filterSpecialite">
+      <option value="">Groupe (Tous)</option>
+      <option *ngFor="let groupe of groupes" [value]="groupe">{{ groupe }}</option>
+    </select>
+  </div>
+
   <div *ngIf="loading">Chargement…</div>
   <div *ngIf="error" class="error">{{ error }}</div>
-  <div *ngIf="!loading && requests.length === 0">
+  <div *ngIf="!loading && filteredRequests.length === 0">
     Aucune demande.
   </div>
 
-  <div class="cards" *ngIf="requests.length">
-    <div class="card" *ngFor="let req of requests">
+  <div class="cards" *ngIf="filteredRequests.length">
+    <div class="card" *ngFor="let req of filteredRequests">
       <h3>{{ req.prenom }} {{ req.nom }}</h3>
       <p><strong>Période:</strong>
          {{ req.date_db | date:'dd/MM/yyyy' }} – {{ req.date_fin | date:'dd/MM/yyyy' }}

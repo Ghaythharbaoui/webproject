@@ -76,6 +76,7 @@ public class Rattrappage implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=true)
 	private Aceptee pinned;
+	private String Matiere;
 	
 	
 	@ManyToOne(cascade = CascadeType.ALL

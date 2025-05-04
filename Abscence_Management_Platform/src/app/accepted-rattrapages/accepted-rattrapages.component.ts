@@ -5,14 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '../auth.service'; // Adjust path as needed
 
-interface AbsenceDTO {
+interface ProcessedRattrapageDTO {
   id: number;
-  date_db: string; // ISO date string (e.g., "2025-05-01")
-  date_fin: string;
-  seancedb: string;
-  seancefin: string;
+  classe: string;
+  specialite: string;
+  groupe: string;
   nom: string;
   prenom: string;
+  date_aff: string; // ISO date string (e.g., "2025-05-03")
+  seanceAff: string;
+  salleId: string;
 }
 
 interface StudentDetails {
@@ -22,17 +24,17 @@ interface StudentDetails {
 }
 
 @Component({
-  selector: 'app-abs-ratt-etd',
+  selector: 'app-accepted-rattrapages',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './abs-ratt-etd.component.html',
-  styleUrls: ['./abs-ratt-etd.component.css']
+  templateUrl: './accepted-rattrapages.component.html',
+  styleUrls: ['./accepted-rattrapages.component.css']
 })
-export class AbsRattEtdComponent implements OnInit {
+export class AcceptedRattrapagesComponent implements OnInit {
   private baseUrl = '/api';
-  title: string = 'Absences Confirmées';
-  absences: AbsenceDTO[] = [];
-  filteredAbsences: AbsenceDTO[] = [];
+  title: string = 'Rattrapages Acceptés';
+  rattrapages: ProcessedRattrapageDTO[] = [];
+  filteredRattrapages: ProcessedRattrapageDTO[] = [];
   classes: string[] = [];
   specialites: string[] = [];
   groupes: string[] = [];
@@ -52,7 +54,7 @@ export class AbsRattEtdComponent implements OnInit {
       this.studentIdSubject.next(id);
       if (id) {
        
-        this.loadAbsences();
+        this.loadRattrapages();
       } else {
         console.error('No studentId found. User not authenticated.');
       }
@@ -96,36 +98,35 @@ export class AbsRattEtdComponent implements OnInit {
     this.applyFilters();
   }
 
-  loadAbsences(): void {
-    this.http.get<AbsenceDTO[]>(`${this.baseUrl}/etudiant/accepted_absences`, { withCredentials: true })
+  loadRattrapages(): void {
+    this.http.get<ProcessedRattrapageDTO[]>(`${this.baseUrl}/etudiant/accepted_rattrapages`, { withCredentials: true })
       .subscribe({
-        next: (absences) => {
-          this.absences = absences;
+        next: (rattrapages) => {
+          this.rattrapages = rattrapages;
           this.applyFilters();
         },
-        error: (err) => console.error('Error fetching absences', err)
+        error: (err) => console.error('Error fetching rattrapages', err)
       });
   }
 
   applyFilters(): void {
-    this.filteredAbsences = this.absences.filter(absence => {
-      // Filter by student's classe, specialite, and groupe
-      // Assuming AbsenceDTO includes these fields; if not, backend should filter
-      return true; // Modify if backend includes classe/specialite/groupe
+    this.filteredRattrapages = this.rattrapages.filter(rattrapage => {
+      const matchesClass = !this.selectedClass || rattrapage.classe === this.selectedClass;
+      const matchesSpec = !this.selectedSpec || rattrapage.specialite === this.selectedSpec;
+      const matchesGroup = !this.selectedGroup || rattrapage.groupe === this.selectedGroup;
+      return matchesClass && matchesSpec && matchesGroup;
     });
   }
 
-  getDateRange(absence: AbsenceDTO): string {
-    const debut = new Date(absence.date_db).toLocaleDateString('fr-FR');
-    const fin = new Date(absence.date_fin).toLocaleDateString('fr-FR');
-    return `${debut} - ${fin}`;
+  getDateAff(rattrapage: ProcessedRattrapageDTO): string {
+    return new Date(rattrapage.date_aff).toLocaleDateString('fr-FR');
   }
 
-  getSeanceRange(absence: AbsenceDTO): string {
-    return `${absence.seancedb} - ${absence.seancefin}`;
+  getClassGroup(rattrapage: ProcessedRattrapageDTO): string {
+    return `${rattrapage.classe} : ${rattrapage.specialite} : ${rattrapage.groupe}`;
   }
 
-  getTeacherName(absence: AbsenceDTO): string {
-    return `${absence.nom} ${absence.prenom}`;
+  getTeacherName(rattrapage: ProcessedRattrapageDTO): string {
+    return `${rattrapage.nom} ${rattrapage.prenom}`;
   }
 }

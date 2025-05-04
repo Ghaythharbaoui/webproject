@@ -40,6 +40,12 @@ public class AbsenceController {
 		}
 	 
 	 
+	 @GetMapping("/etudiant/accepted_absences")
+		public List<AbsenceDTO> getAllAcceptedAbs() {
+			return absenceService.getAllAcceptedAbs();
+		}
+	 
+	 
 	 @PostMapping("/enseignant/creerAbs")
 	    public ResponseEntity<Long> createAbsence(
 	        @RequestBody NewAbsenceRequest req

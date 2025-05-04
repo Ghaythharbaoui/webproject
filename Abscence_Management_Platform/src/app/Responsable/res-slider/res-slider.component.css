@@ -1,108 +1,31 @@
-.Btn {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 45px;
-    height: 45px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition-duration: .3s;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
-    background-color: rgb(255, 65, 65);
-    bottom: 1%;
-    position: absolute;
-  }
-  
-  /* plus sign */
-  .sign {
-    width: 100%;
-    transition-duration: .3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .sign svg {
-    width: 17px;
-  }
-  
-  .sign svg path {
-    fill: white;
-  }
-  /* text */
-  .text {
-    position: absolute;
-    right: 0%;
-    width: 0%;
-    opacity: 0;
-    color: white;
-    font-size: 1.2em;
-    font-weight: 600;
-    transition-duration: .3s;
-  }
-  /* hover effect on button width */
-  .Btn:hover {
-    width: 150px;
-    border-radius: 40px;
-    transition-duration: .3s;
-  }
-  
-  .Btn:hover .sign {
-    width: 30%;
-    transition-duration: .3s;
-    padding-left: 1%;
-  }
-  /* hover effect button's text */
-  .Btn:hover .text {
-    opacity: 1;
-    width: 70%;
-    transition-duration: .3s;
-    padding-right: 10px;
-  }
-  /* button click effect*/
-  .Btn:active {
-    transform: translate(2px ,2px);
-  }
-  .sidebar{
-   margin-top: 0px;
-    background-color: #34495E;
-    height:100%;
-    width:100%;
-    display: flex;
-    flex-direction: column;
-    align-items:center ;
-    padding:10px;
-  }
-  h1{
-    padding-top: 5%;
-    margin-top: 0px;
-    color:white;
-    font-family: 'Poppins', sans-serif;
-  }
-
-
-
-
-
-
-
-
-
-
-  /* From Uiverse.io by FH638 */ 
-menu{
-  margin:0px;
- 
-  margin-left:-100px;
+.sidebar {
+  background-color: #34495E;
+  height: 100%;
+  width: 300px; /* Match dashboard */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  overflow: hidden; /* Prevent internal scrolling */
 }
-  .input {
-   
-    margin-left: -5%;
-    
-  }
+
+h1 {
+  padding-top: 5%;
+  margin-top: 0;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
+
+menu {
+  margin: 0;
+  width: 100%; /* Full sidebar width */
+  flex: 1; /* Take available space */
+}
+
+.input {
+  margin-left: -5%;
+}
+
 .value {
   font-size: 15px;
   background-color: transparent;
@@ -116,7 +39,7 @@ menu{
   border-radius: 10px;
   transition: 1s;
   box-sizing: border-box;
-  width:110%;
+  width: 110%;
 }
 
 .value:not(:active):hover,
@@ -132,7 +55,6 @@ menu{
   background-color: #1a1f24;
   outline: none;
   margin-left: 17px;
-  
 }
 
 .value::before {
@@ -159,6 +81,73 @@ menu{
 
 .input:hover > :not(.value:hover) {
   transition: 300ms;
-  /*filter: blur(1.5px);*/
   transform: scale(0.95, 0.95);
+}
+
+.Btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px; /* Fixed distance from bottom */
+  left: 20px; /* Align with padding */
+  overflow: hidden;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  background-color: rgb(255, 65, 65);
+}
+
+.sign {
+  width: 100%;
+  transition-duration: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign svg {
+  width: 17px;
+}
+
+.sign svg path {
+  fill: white;
+}
+
+.text {
+  position: absolute;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition-duration: .3s;
+}
+
+.Btn:hover {
+  width: 150px;
+  border-radius: 40px;
+  transition-duration: .3s;
+}
+
+.Btn:hover .sign {
+  width: 30%;
+  transition-duration: .3s;
+  padding-left: 1%;
+}
+
+.Btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: .3s;
+  padding-right: 10px;
+}
+
+.Btn:active {
+  transform: translate(2px, 2px);
 }

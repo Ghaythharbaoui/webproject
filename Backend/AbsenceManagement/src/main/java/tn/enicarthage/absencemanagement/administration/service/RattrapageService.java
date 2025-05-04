@@ -62,6 +62,10 @@ public class RattrapageService {
 			return rattrapageRepository.findAllProcessedWithEnseignant();
 		}
 	 
+	 public List<ProcessedRattrapageDTO> getAllAcceptedRatt() {
+			return rattrapageRepository.findAllAcceptedRatt();
+		}
+	 
 	
      
 	 @Transactional
@@ -91,7 +95,7 @@ public class RattrapageService {
 
 	        // 2) Créer et persister la nouvelle Seance de rattrapage
 	        Seance seance = new Seance();
-	        seance.setMatiere(null);
+	        seance.setMatiere(ratt.getMatiere());
 	        seance.setISrattrappage(Aceptee.oui);
 	        seance.setEnseignant(ens);
 	        seance.setRattrapage(ratt);
@@ -176,6 +180,7 @@ public class RattrapageService {
 	        ratt.setSeancedb(null);
 	        ratt.setSeancefin(null);
 
+	        ratt.setMatiere(req.getMatiere());
 	        // flagged non par défaut
 	        ratt.setAcceptee(null);
 	        ratt.setPinned(Aceptee.non);
@@ -224,7 +229,8 @@ public class RattrapageService {
 	            r.getPinned()   != null ? r.getPinned().name()   : null,
 	            r.getClasse(),
 	            r.getSpecialite(),
-	            r.getGroupe()
+	            r.getGroupe(),
+	            r.getSalle().getNoSalle()
 	        );
 	    }
 	 

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tn.enicarthage.absencemanagement.administration.model.Salle;
 import tn.enicarthage.absencemanagement.etudiants.model.Classe;
 import tn.enicarthage.absencemanagement.etudiants.model.Groupe;
 import tn.enicarthage.absencemanagement.etudiants.model.Specialite;
@@ -26,4 +27,5 @@ public class RattrapageDTOENS {
 	    private Classe classe;
 	    private Specialite specialite;
 	    private Groupe groupe;
+	    private String salleaff;
 }

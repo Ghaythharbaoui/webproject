@@ -1,16 +1,24 @@
-.dashboard{
-    display:flex;
+.dashboard {
+    display: flex;
     flex-direction: row;
-    height:100%;
-    width:100%;
+    height: 100vh; /* Full viewport height */
+    width: 100%;
     background-color: #F4F6F9;
-   
-}
-app-sidebar-teacher{
+    overflow: hidden; /* Prevent dashboard from scrolling */
+  }
+  
+  app-sidebar-teacher {
+    width: 300px; /* Fixed sidebar width */
     height: 100vh;
-    margin: 0px;
-    
-}
-.content{
-    margin-left:100px;
-}
+    position: fixed; /* Fix sidebar in place */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure sidebar is above content */
+  }
+  
+  .content {
+    margin-left: 310px; /* Match sidebar width */
+    width: calc(100% - 300px); /* Fill remaining width */
+    height: 100vh;
+    overflow: hidden; /* Prevent content container from scrolling */
+  }

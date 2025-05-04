@@ -34,6 +34,11 @@ public class AbsenceService {
 		}
 	 
 	 
+	 public List<AbsenceDTO> getAllAcceptedAbs() {
+			return absenceRepository.findAllAcceptedAbs();
+		}
+	 
+	 
 	 
 	 @Transactional
 	    public Long createAbsence(NewAbsenceRequest req) {

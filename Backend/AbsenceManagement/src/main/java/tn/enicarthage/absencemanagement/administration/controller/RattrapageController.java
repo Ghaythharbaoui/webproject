@@ -38,7 +38,7 @@ public class RattrapageController {
 			 
 		        return rattrapageService.getAllRattrapages();
 		 }
-		 @GetMapping("/admin/DateAffRatt")
+		 @GetMapping("/etudiant/DateAffRatt")
 		 public LocalDate getDateAff( @RequestParam int id) {
 			 return rattrapageService.getDateAffRatt(id);
 		 }
@@ -46,6 +46,12 @@ public class RattrapageController {
 		 @GetMapping("/admin/processed_rattrapages")
 			public List<ProcessedRattrapageDTO> getAllProcessedRattrapages() {
 				return rattrapageService.getAllProcessedRattrapages();
+			}
+		 
+		 
+		 @GetMapping("/etudiant/accepted_rattrapages")
+			public List<ProcessedRattrapageDTO> getAllAcceptedRatt() {
+				return rattrapageService.getAllAcceptedRatt();
 			}
 		 
 		 

@@ -6,7 +6,6 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 
-
 @Component({
   selector: 'app-catch-up-request-form',
   standalone: true,
@@ -35,7 +34,8 @@ export class CatchUpRequestFormComponent implements OnInit {
       dateFin: ['', Validators.required],
       classe: ['', Validators.required],
       specialite: ['', Validators.required],
-      groupe: ['', Validators.required]
+      groupe: ['', Validators.required],
+      matiere: ['', Validators.required] // Added matiere with required validator
     });
   }
 
@@ -94,7 +94,8 @@ export class CatchUpRequestFormComponent implements OnInit {
         ...this.rattrapageForm.value,
         dateDebut: new Date(this.rattrapageForm.value.dateDebut).toISOString().split('T')[0],
         dateFin: new Date(this.rattrapageForm.value.dateFin).toISOString().split('T')[0],
-        enseignantId: this.enseignantIdSubject.value
+        enseignantId: this.enseignantIdSubject.value,
+        matiere: this.rattrapageForm.value.matiere // Include matiere
       };
 
       this.rattrapageService.submitRattrapageRequest(request).subscribe({

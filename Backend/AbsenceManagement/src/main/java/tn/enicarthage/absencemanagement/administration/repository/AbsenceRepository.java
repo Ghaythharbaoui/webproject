@@ -66,5 +66,32 @@ public interface AbsenceRepository extends JpaRepository<Absence, Long>{
 		      WHERE a.acceptee IS NOT NULL
 		    """)
 	List<AbsenceDTO> findAllProcessedWithEnseignant();
+	
+	
+	
+	
+	
+	
+	
+	@Query("""
+		      SELECT new tn.enicarthage.absencemanagement.administration.model.AbsenceDTO(
+		        a.id,
+		        a.date_db,           
+		        a.date_fin,
+		        a.seancedb,
+		        a.seancefin,
+		        a.acceptee,
+		        e.id,           
+		        e.nom,
+		        e.prenom,
+		        e.grade,
+		        e.num_tel,
+		        e.nbAbsences
+		      )
+		      FROM Absence a
+		      JOIN a.enseignant e
+		      WHERE a.acceptee=Aceptee.oui
+		    """)
+	List<AbsenceDTO> findAllAcceptedAbs();
 
 }

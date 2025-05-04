@@ -29,4 +29,5 @@ public class NewRattrapageRequest {
   private LocalDate dateFin;
 
   private Long enseignantId;
+  private String matiere;
 }

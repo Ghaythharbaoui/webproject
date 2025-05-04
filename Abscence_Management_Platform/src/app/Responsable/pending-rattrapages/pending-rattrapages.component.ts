@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { AdminService } from '../admin.service';
 import {
   RattrapageRequest,
@@ -16,9 +17,19 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./pending-rattrapages.component.css']
 })
 export class PendingRattrapagesComponent implements OnInit {
+  private baseUrl = '/api';
   requests: RattrapageRequest[] = [];
+  filteredRequests: RattrapageRequest[] = [];
   loading = true;
   error: string | null = null;
+
+  // Filter properties
+  classes: string[] = [];
+  specialites: string[] = [];
+  groupes: string[] = [];
+  filterClasse: string = '';
+  filterSpecialite: string = '';
+  filterGroupe: string = '';
 
   seancesMap = new Map<
     number,
@@ -41,12 +52,29 @@ export class PendingRattrapagesComponent implements OnInit {
     SUNDAY: 'Dimanche'
   };
 
-  constructor(private admin: AdminService) {}
+  constructor(
+    private http: HttpClient,
+    private admin: AdminService
+  ) {}
 
   ngOnInit() {
+    // Fetch classes
+    this.http.get<string[]>(`${this.baseUrl}/emploi-temps/classes`, { withCredentials: true })
+      .subscribe({
+        next: (classes) => {
+          this.classes = classes;
+        },
+        error: (err) => {
+          this.error = 'Erreur lors du chargement des classes.';
+          console.error('Error fetching classes:', err);
+        }
+      });
+
+    // Fetch pending rattrapages
     this.admin.getPendingRattrapages().subscribe({
       next: (list) => {
         this.requests = list;
+        this.filteredRequests = list; // Initialize filteredRequests
         // Initialize seancesMap for each request
         list.forEach((req) => {
           if (!this.seancesMap.has(req.id)) {
@@ -60,6 +88,53 @@ export class PendingRattrapagesComponent implements OnInit {
         console.error('Error loading rattrapages:', err);
         this.loading = false;
       }
+    });
+  }
+
+  loadSpecialites() {
+    this.specialites = [];
+    this.groupes = [];
+    this.filterSpecialite = '';
+    this.filterGroupe = '';
+    if (this.filterClasse) {
+      this.http.get<string[]>(`${this.baseUrl}/emploi-temps/specialites?classe=${this.filterClasse}`, { withCredentials: true })
+        .subscribe({
+          next: (specialites) => {
+            this.specialites = specialites;
+          },
+          error: (err) => {
+            this.error = 'Erreur lors du chargement des spécialités.';
+            console.error('Error fetching specialites:', err);
+          }
+        });
+    }
+    this.applyFilters();
+  }
+
+  loadGroupes() {
+    this.groupes = [];
+    this.filterGroupe = '';
+    if (this.filterClasse && this.filterSpecialite) {
+      this.http.get<string[]>(`${this.baseUrl}/emploi-temps/groupes?classe=${this.filterClasse}&specialite=${this.filterSpecialite}`, { withCredentials: true })
+        .subscribe({
+          next: (groupes) => {
+            this.groupes = groupes;
+          },
+          error: (err) => {
+            this.error = 'Erreur lors du chargement des groupes.';
+            console.error('Error fetching groupes:', err);
+          }
+        });
+    }
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    this.filteredRequests = this.requests.filter((req) => {
+      const matchesClasse = !this.filterClasse || req.classe === this.filterClasse;
+      const matchesSpecialite = !this.filterSpecialite || req.specialite === this.filterSpecialite;
+      const matchesGroupe = !this.filterGroupe || req.groupe === this.filterGroupe;
+      return matchesClasse && matchesSpecialite && matchesGroupe;
     });
   }
 
@@ -162,6 +237,7 @@ export class PendingRattrapagesComponent implements OnInit {
       next: () => {
         console.log('Rattrapage accepted successfully');
         this.requests = this.requests.filter((r) => r.id !== req.id);
+        this.applyFilters(); // Re-apply filters after removing request
         this.seancesMap.delete(req.id);
       },
       error: (err) => {
@@ -184,6 +260,7 @@ export class PendingRattrapagesComponent implements OnInit {
       next: () => {
         console.log('Rattrapage rejected successfully');
         this.requests = this.requests.filter((r) => r.id !== req.id);
+        this.applyFilters(); // Re-apply filters after removing request
         this.seancesMap.delete(req.id);
       },
       error: (err) => {

@@ -59,6 +59,16 @@
       </div>
     </div>
 
+    <div class="form-row">
+      <div class="form-group">
+        <label for="matiere">Matière</label>
+        <input type="text" id="matiere" formControlName="matiere" class="form-control" [ngClass]="{'is-invalid': rattrapageForm.get('matiere')?.invalid && rattrapageForm.get('matiere')?.touched}">
+        <div *ngIf="rattrapageForm.get('matiere')?.invalid && rattrapageForm.get('matiere')?.touched" class="invalid-feedback">
+          La matière est requise.
+        </div>
+      </div>
+    </div>
+
     <button type="submit" class="btn-primary" [disabled]="rattrapageForm.invalid">Envoyer</button>
   </form>
 </div>

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-
 export interface NewRattrapageRequest {
   classe: string;
   specialite: string;
@@ -10,13 +9,14 @@ export interface NewRattrapageRequest {
   dateDebut: string;
   dateFin: string;
   enseignantId: number;
+  matiere: string; // Added matiere
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class RattrapageService {
-    private baseUrl = '/api/enseignant';
+  private baseUrl = '/api/enseignant';
 
   constructor(private http: HttpClient) {}
 
